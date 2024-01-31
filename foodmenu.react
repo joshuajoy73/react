@@ -1,0 +1,428 @@
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { BrowserRouter } from "react-router-dom";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+//index.js
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const pizzaData = [
+  {
+    name: "Focaccia",
+    ingredients: "Bread with Italian olive oil and rosemary",
+    price: 6,
+    photoName: "pizzas/focaccia.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Margherita",
+    ingredients: "Tomato and mozzarella",
+    price: 10,
+    photoName: "pizzas/margherita.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Spinaci",
+    ingredients: "Tomato, mozzarella, spinach, and ricotta cheese",
+    price: 12,
+    photoName: "pizzas/spinaci.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Funghi",
+    ingredients: "Tomato, mozzarella, mushrooms, and onion",
+    price: 12,
+    photoName: "pizzas/funghi.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Salamino",
+    ingredients: "Tomato, mozzarella, and pepperoni",
+    price: 15,
+    photoName: "pizzas/salamino.jpg",
+    soldOut: true,
+  },
+  {
+    name: "Pizza Prosciutto",
+    ingredients: "Tomato, mozzarella, ham, arugula, and burrata cheese",
+    price: 18,
+    photoName: "pizzas/prosciutto.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Chicken Alfredo",
+    ingredients: "Grilled chicken, fettuccine, Alfredo sauce",
+    price: 15,
+    photoName: "pizzas/Alfredo.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Vegetarian Lasagna",
+    ingredients: "Layers of pasta, tomato sauce, vegetables, and cheese",
+    price: 14,
+    photoName: "pizzas/vegetarian_lasagna.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Shrimp Scampi",
+    ingredients: "Shrimp, linguine, garlic, butter, white wine",
+    price: 18,
+    photoName: "pizzas/shrimp_scampi.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Beef Stir-Fry",
+    ingredients: "Sliced beef, mixed vegetables, soy sauce, rice",
+    price: 16,
+    photoName: "pizzas/beef_stir_fry.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Caprese Salad",
+    ingredients: "Tomatoes, fresh mozzarella, basil, balsamic glaze",
+    price: 10,
+    photoName: "pizzas/caprese_salad.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Salmon Teriyaki",
+    ingredients: "Grilled salmon, teriyaki glaze, steamed broccoli",
+    price: 20,
+    photoName: "pizzas/salmon_teriyaki.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Mushroom Risotto",
+    ingredients: "Arborio rice, mushrooms, Parmesan cheese, broth",
+    price: 13,
+    photoName: "pizzas/mushroom_risotto.jpg",
+    soldOut: false,
+  },
+  {
+    name: "BBQ Pulled Pork Sandwich",
+    ingredients: "Slow-cooked pulled pork, BBQ sauce, coleslaw",
+    price: 14,
+    photoName: "pizzas/bbq_pulled_pork_sandwich.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Greek Gyro",
+    ingredients: "Grilled lamb, tzatziki, tomatoes, onions, pita bread",
+    price: 17,
+    photoName: "pizzas/greek_gyro.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Vegan Buddha Bowl",
+    ingredients: "Quinoa, roasted vegetables, avocado, tahini dressing",
+    price: 12,
+    photoName: "pizzas/vegan_buddha_bowl.jpg",
+    soldOut: false,
+  },
+];
+function Main() {
+  return (
+    <div>
+      <Header />
+      <Menu pizzaData={pizzaData} />
+      <Footer />
+    </div>
+  );
+}
+
+function Header() {
+  const style = {};
+
+  return (
+    <header className="header">
+      <h1 style={style}>Fast React delicacies Co.</h1>
+    </header>
+  );
+}
+
+function Menu({ pizzaData }) {
+  const [step, setStep] = useState(0);
+  const numPizzas = pizzaData.length;
+
+  const incStep = () => {
+    if (step < numPizzas - 1) {
+      setStep((currentStep) => currentStep + 1);
+    }
+  };
+
+  const decStep = () => {
+    if (step > 0) {
+      setStep((currentStep) => currentStep - 1);
+    }
+  };
+
+  const pizza = pizzaData[step];
+
+  return (
+    <main className="menu">
+      <h2>Our menu</h2>
+
+      {numPizzas > 0 ? (
+        <>
+          <p>
+            Authentic Italian cuisine. Creative dishes to choose from. All from
+            our stone oven, all organic, all delicious.
+          </p>
+
+          <ul className="pizzas">
+            <Pizza pizzaObj={pizza} name={pizza.name} />
+          </ul>
+
+          <div>
+            <button className="btn" onClick={decStep}>
+              Previous
+            </button>{" "}
+            <button className="btn" onClick={incStep}>
+              Next
+            </button>
+          </div>
+        </>
+      ) : (
+        <p>We're still working on our menu. Please come back later :)</p>
+      )}
+    </main>
+  );
+}
+
+function Pizza({ pizzaObj }) {
+  return (
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
+      <div>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : `$${pizzaObj.price}`}</span>
+      </div>
+    </li>
+  );
+}
+
+function Footer() {
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
+  const navigate = useNavigate();
+  const handleOrderClick = () => {
+    navigate("/orders");
+  };
+  return (
+    <footer className="footer">
+      {isOpen ? (
+        <p>
+          We're open! Come and enjoy our delicious dishes.
+          <button className="btn" onClick={handleOrderClick}>
+            order
+          </button>
+        </p>
+      ) : (
+        <p>
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00.
+          <button className="btn" onClick={handleOrderClick}>
+            {" "}
+            order
+          </button>
+        </p>
+      )}
+    </footer>
+  );
+}
+function Order() {
+  return <div> hello</div>;
+}
+
+export default Main;
+//main.js
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+const pizzaData = [
+  {
+    name: "Focaccia",
+    ingredients: "Bread with Italian olive oil and rosemary",
+    price: 6,
+    photoName: "pizzas/focaccia.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Margherita",
+    ingredients: "Tomato and mozzarella",
+    price: 10,
+    photoName: "pizzas/margherita.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Spinaci",
+    ingredients: "Tomato, mozzarella, spinach, and ricotta cheese",
+    price: 12,
+    photoName: "pizzas/spinaci.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Funghi",
+    ingredients: "Tomato, mozzarella, mushrooms, and onion",
+    price: 12,
+    photoName: "pizzas/funghi.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Salamino",
+    ingredients: "Tomato, mozzarella, and pepperoni",
+    price: 15,
+    photoName: "pizzas/salamino.jpg",
+    soldOut: true,
+  },
+  {
+    name: "Pizza Prosciutto",
+    ingredients: "Tomato, mozzarella, ham, arugula, and burrata cheese",
+    price: 18,
+    photoName: "pizzas/prosciutto.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Chicken Alfredo",
+    ingredients: "Grilled chicken, fettuccine, Alfredo sauce",
+    price: 15,
+    photoName: "pizzas/Alfredo.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Vegetarian Lasagna",
+    ingredients: "Layers of pasta, tomato sauce, vegetables, and cheese",
+    price: 14,
+    photoName: "pizzas/vegetarian_lasagna.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Shrimp Scampi",
+    ingredients: "Shrimp, linguine, garlic, butter, white wine",
+    price: 18,
+    photoName: "pizzas/shrimp_scampi.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Beef Stir-Fry",
+    ingredients: "Sliced beef, mixed vegetables, soy sauce, rice",
+    price: 16,
+    photoName: "pizzas/beef_stir_fry.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Caprese Salad",
+    ingredients: "Tomatoes, fresh mozzarella, basil, balsamic glaze",
+    price: 10,
+    photoName: "pizzas/caprese_salad.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Salmon Teriyaki",
+    ingredients: "Grilled salmon, teriyaki glaze, steamed broccoli",
+    price: 20,
+    photoName: "pizzas/salmon_teriyaki.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Mushroom Risotto",
+    ingredients: "Arborio rice, mushrooms, Parmesan cheese, broth",
+    price: 13,
+    photoName: "pizzas/mushroom_risotto.jpg",
+    soldOut: false,
+  },
+  {
+    name: "BBQ Pulled Pork Sandwich",
+    ingredients: "Slow-cooked pulled pork, BBQ sauce, coleslaw",
+    price: 14,
+    photoName: "pizzas/bbq_pulled_pork_sandwich.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Greek Gyro",
+    ingredients: "Grilled lamb, tzatziki, tomatoes, onions, pita bread",
+    price: 17,
+    photoName: "pizzas/greek_gyro.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Vegan Buddha Bowl",
+    ingredients: "Quinoa, roasted vegetables, avocado, tahini dressing",
+    price: 12,
+    photoName: "pizzas/vegan_buddha_bowl.jpg",
+    soldOut: false,
+  },
+];
+
+function Main() {
+  const [selectedPizzas, setSelectedPizzas] = useState([]);
+  const [totalCost, setTotalCost] = useState(0);
+  const [isPaymentComplete, setIsPaymentComplete] = useState(false);
+
+  const handleSelectClick = (pizza) => {
+    if (!selectedPizzas.includes(pizza)) {
+      setSelectedPizzas([...selectedPizzas, pizza]);
+      setTotalCost((prevTotal) => prevTotal + pizza.price);
+    }
+  };
+
+  const handlePaymentClick = () => {
+    if (parseFloat(text) === totalCost) {
+      setIsPaymentComplete(true);
+    } else {
+      alert(
+        "Entered price does not match the total cost. Please enter the correct amount."
+      );
+    }
+  };
+
+  const navigate = useNavigate();
+  function send() {
+    navigate("/");
+  }
+  const [text, ntext] = useState("");
+  const handleChange = (event) => {
+    ntext(event.target.value);
+  };
+  return (
+    <div>
+      <h2>Your Orders</h2>
+      <ul>
+        {pizzaData.map((pizza) => (
+          <li key={pizza.name}>
+            {pizza.name} - ${pizza.price}
+            <button onClick={() => handleSelectClick(pizza)}>Select</button>
+          </li>
+        ))}
+      </ul>
+      <p>Total Cost: ${totalCost}</p>
+
+      {selectedPizzas.length > 0 && !isPaymentComplete && (
+        <button onClick={handlePaymentClick}>
+          <input type="text" value={text} onChange={handleChange} />
+          Make Payment
+        </button>
+      )}
+
+      {isPaymentComplete && (
+        <p>
+          Payment successful! Enjoy your meal!{" "}
+          <button className="btn" onClick={send}>
+            goBack
+          </button>
+        </p>
+      )}
+    </div>
+  );
+}
+
+export default Main;
+//Order.js

@@ -1,0 +1,57 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+function Destination() {
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const navigate = useNavigate();
+
+  const handleLocationClick = (location) => {
+    setSelectedLocation(location);
+  };
+
+  const handleEndJourneyClick = () => {
+    if (selectedLocation) {
+      alert(`Hope you had a nice journey to ${selectedLocation}!`);
+    } else {
+      alert("Please choose a location before ending the journey.");
+    }
+  };
+
+  const handleGoBackClick = () => {
+    navigate(-1);
+  };
+
+  return (
+    <div>
+      <h2>Choose Your Destination</h2>
+      <div>
+        <button onClick={() => handleLocationClick("Destination 1")}>
+          Destination 1
+        </button>
+        <button onClick={() => handleLocationClick("Destination 2")}>
+          Destination 2
+        </button>
+        <button onClick={() => handleLocationClick("Destination 3")}>
+          Destination 3
+        </button>
+        <button onClick={() => handleLocationClick("Destination 4")}>
+          Destination 4
+        </button>
+      </div>
+
+      <h3>Selected Location: {selectedLocation || "None"}</h3>
+
+      <div>
+        <img src="images/download.jpg" alt="Destination 1" />
+        <img src="images/img1.jpg" alt="Destination 2" />
+        <img src="images/images.jpg" alt="Destination 3" />
+        <img src="images/jpeg.jpg" alt="Destination 4" />
+      </div>
+
+      <button onClick={handleEndJourneyClick}>start Journey</button>
+      <button onClick={handleGoBackClick}>Go Back</button>
+    </div>
+  );
+}
+
+export default Destination;
